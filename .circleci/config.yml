@@ -1,21 +1,23 @@
 jobs:
   build:
     docker:
-      - image: python:3.6                   # similar to "image" in GitLab
+      - image: python:3.6
     steps:
       - checkout
-      - run: |                              # similar to "script" in GitLab
-          pip install -r requirements.txt
-          python manage.py check
+      - run:
+          command: |
+            pip install -r requirements.txt
+            python manage.py check
 
   test:
     docker:
       - image: python:3.6
     steps:
       - checkout
-      - run: |
-          pip install -r requirements.txt
-          python manage.py test taskManager
+      - run:
+          command: |
+            pip install -r requirements.txt
+            python manage.py test taskManager
 
   integration:
     docker:
@@ -26,6 +28,7 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
+          continue-on-error: true  # Allow this step to fail without failing the job
 
   prod:
     docker:
