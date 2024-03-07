@@ -28,7 +28,20 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
-          continue-on-error: true  # Allow this step to fail without failing the job
+          continue-on-error: true
+
+  artifact:
+    docker:
+      - image: python:3.6
+    steps:
+      - name: Create artifact file
+        run: echo "hello" > hello.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: hello.txt
 
   prod:
     docker:
@@ -44,4 +57,5 @@ workflows:
       - build
       - test
       - integration
+      - artifact  # Added the new 'artifact' job
       - prod
